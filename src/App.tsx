@@ -41,7 +41,8 @@ import {
   updateDoc,
   deleteDoc,
   writeBatch,
-  getDocs
+  getDocs,
+  getDocFromServer
 } from 'firebase/firestore';
 import { db, handleFirestoreError, OperationType } from './firebase';
 import { 
@@ -221,23 +222,31 @@ const PaymentModal = ({ plan, onClose }: { plan: any, onClose: () => void }) => 
   }
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/90 backdrop-blur-xl overflow-y-auto">
+    <div className="fixed inset-0 z-[200] flex items-start justify-center p-0 sm:p-4 bg-black/95 backdrop-blur-xl overflow-y-auto overscroll-contain">
+      {/* Fixed Close Button for Mobile */}
+      <button 
+        onClick={onClose} 
+        className="fixed top-4 right-4 z-[210] p-3 bg-white/10 hover:bg-white/20 rounded-full text-white backdrop-blur-md border border-white/10 md:hidden shadow-2xl"
+      >
+        <X className="w-6 h-6" />
+      </button>
+
       <motion.div 
-        initial={{ scale: 0.9, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        className="bg-zinc-900 border border-white/10 p-6 sm:p-8 rounded-3xl max-w-2xl w-full my-8"
+        initial={{ y: 50, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        className="bg-zinc-900 border-x border-t sm:border border-white/10 p-6 sm:p-8 rounded-t-[2.5rem] sm:rounded-3xl max-w-2xl w-full mt-12 sm:my-8 relative min-h-[calc(100vh-3rem)] sm:min-h-0"
       >
         <div className="flex justify-between items-center mb-8">
           <div>
             <h2 className="text-2xl font-bold text-white">Complete Payment</h2>
             <p className="text-gray-400">Plan: {plan.name} - ₹{plan.price}</p>
           </div>
-          <button onClick={onClose} className="text-gray-400 hover:text-white p-2">
+          <button onClick={onClose} className="hidden md:block text-gray-400 hover:text-white p-2">
             <X />
           </button>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid md:grid-cols-2 gap-8 pb-10 sm:pb-0">
           {/* QR Section */}
           <div className="space-y-6">
             <div className="bg-white p-4 rounded-2xl aspect-square flex items-center justify-center shadow-2xl shadow-white/5">
@@ -382,16 +391,20 @@ const ChatWidget = () => {
       const aiResponse = await getAIResponse(text, userName, gameName);
       
       if (aiResponse) {
-        await addDoc(collection(db, 'support_chats', chatId, 'messages'), {
-          text: aiResponse,
-          sender: 'admin',
-          timestamp: serverTimestamp()
-        });
+        try {
+          await addDoc(collection(db, 'support_chats', chatId, 'messages'), {
+            text: aiResponse,
+            sender: 'admin',
+            timestamp: serverTimestamp()
+          });
 
-        await updateDoc(doc(db, 'support_chats', chatId), {
-          lastMessage: aiResponse,
-          updatedAt: serverTimestamp()
-        });
+          await updateDoc(doc(db, 'support_chats', chatId), {
+            lastMessage: aiResponse,
+            updatedAt: serverTimestamp()
+          });
+        } catch (err) {
+          console.error("AI Message Save Error:", err);
+        }
       }
       setIsTyping(false);
     } catch (error) {
@@ -594,6 +607,19 @@ const ChatWidget = () => {
 export default function App() {
   const [selectedPlan, setSelectedPlan] = useState<any>(null);
   const [previewItem, setPreviewItem] = useState<any>(null);
+
+  useEffect(() => {
+    const testConnection = async () => {
+      try {
+        await getDocFromServer(doc(db, 'test', 'connection'));
+      } catch (error) {
+        if (error instanceof Error && error.message.includes('the client is offline')) {
+          console.error("Firebase connection error: The client is offline. Check your configuration.");
+        }
+      }
+    };
+    testConnection();
+  }, []);
 
   return (
     <div className="min-h-screen bg-[#050505] text-white selection:bg-orange-500 selection:text-white overflow-x-hidden">
