@@ -1,0 +1,79 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // ===============================================================
+    // Assumed Data Model
+    // ===============================================================
+    //
+    // Collection: payments
+    // Fields:
+    //   - userName: string (required) - User's Full Name
+    //   - gameName: string (required) - Game Name / ID
+    //   - planId: string (required)
+    //   - planName: string
+    //   - amount: number (required)
+    //   - utrNumber: string (required, 12 digits)
+    //   - status: string (pending, approved, rejected)
+    //   - createdAt: timestamp
+    //   - updatedAt: timestamp
+    //
+    // ===============================================================
+
+    // Helper Functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() &&
+        ((request.auth.token.email == "sumitkumar5777sk@gmail.com" && request.auth.token.email_verified == true) ||
+         (exists(/databases/$(database)/documents/users/$(request.auth.uid)) && 
+          get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin'));
+    }
+
+    function isValidPayment(data) {
+      return data.userName is string && data.userName.size() > 0 && data.userName.size() < 100 &&
+             data.planId is string &&
+             data.amount is number && data.amount > 0 &&
+             data.utrNumber is string && data.utrNumber.matches("^[0-9]{12}$") &&
+             data.status in ['pending', 'approved', 'rejected'];
+    }
+
+    function isValidChat(data) {
+      return data.userName is string && data.userName.size() > 0 && data.userName.size() < 100 &&
+             data.gameName is string && data.gameName.size() > 0 && data.gameName.size() < 100 &&
+             data.status in ['open', 'closed'] &&
+             data.lastMessage is string &&
+             data.createdAt is timestamp &&
+             data.updatedAt is timestamp;
+    }
+
+    function isValidMessage(data) {
+      return data.text is string && data.text.size() > 0 && data.text.size() < 1000 &&
+             data.sender in ['user', 'admin'] &&
+             data.timestamp is timestamp;
+    }
+
+    match /users/{userId} {
+      allow read: if isAuthenticated() && (request.auth.uid == userId || isAdmin());
+      allow create: if isAuthenticated() && request.auth.uid == userId && request.resource.data.role == 'user';
+      allow update: if isAdmin();
+    }
+
+    match /payments/{paymentId} {
+      allow read: if isAdmin();
+      allow create: if isValidPayment(request.resource.data) && request.resource.data.status == 'pending';
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    match /support_chats/{chatId} {
+      allow read, write: if true;
+      
+      match /messages/{messageId} {
+        allow read, write, delete: if true;
+      }
+    }
+  }
+}

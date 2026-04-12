@@ -1,0 +1,75 @@
+{
+  "entities": {
+    "Payment": {
+      "title": "Payment",
+      "description": "A payment request from a user for a hack plan",
+      "type": "object",
+      "properties": {
+        "userName": { "type": "string", "description": "The user's full name" },
+        "gameName": { "type": "string", "description": "The name or ID of the game" },
+        "planId": { "type": "string", "description": "The ID of the selected plan" },
+        "planName": { "type": "string", "description": "The name of the selected plan" },
+        "amount": { "type": "number", "description": "The amount paid" },
+        "utrNumber": { "type": "string", "description": "The transaction UTR number" },
+        "status": { "type": "string", "enum": ["pending", "approved", "rejected"], "description": "Current status of the payment" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "When the payment was submitted" },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "When the payment was last updated" }
+      },
+      "required": ["userName", "gameName", "planId", "amount", "utrNumber", "status", "createdAt"]
+    },
+    "User": {
+      "title": "User",
+      "description": "User profile and role information",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string" },
+        "role": { "type": "string", "enum": ["admin", "user"] },
+        "uid": { "type": "string" }
+      },
+      "required": ["email", "role", "uid"]
+    },
+    "SupportChat": {
+      "title": "SupportChat",
+      "description": "A live support chat session",
+      "type": "object",
+      "properties": {
+        "userName": { "type": "string" },
+        "gameName": { "type": "string" },
+        "lastMessage": { "type": "string" },
+        "status": { "type": "string", "enum": ["open", "closed"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userName", "gameName", "status", "createdAt", "updatedAt"]
+    },
+    "ChatMessage": {
+      "title": "ChatMessage",
+      "description": "A message in a support chat",
+      "type": "object",
+      "properties": {
+        "text": { "type": "string" },
+        "sender": { "type": "string", "enum": ["user", "admin"] },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["text", "sender", "timestamp"]
+    }
+  },
+  "firestore": {
+    "/payments/{paymentId}": {
+      "schema": "Payment",
+      "description": "Collection of payment requests"
+    },
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "Collection of user profiles"
+    },
+    "/support_chats/{chatId}": {
+      "schema": "SupportChat",
+      "description": "Collection of support chat sessions"
+    },
+    "/support_chats/{chatId}/messages/{messageId}": {
+      "schema": "ChatMessage",
+      "description": "Subcollection of messages in a chat"
+    }
+  }
+}
