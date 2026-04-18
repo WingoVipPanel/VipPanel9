@@ -188,7 +188,7 @@ const PaymentModal = ({ plan, onClose }: { plan: any, onClose: () => void }) => 
         `Please confirm my payment and provide the VIP access!`
       );
       
-      window.open(`https://t.me/SKMafia?text=${telegramMessage}`, '_blank');
+      window.open(`https://t.me/ProHackAdmin?text=${telegramMessage}`, '_blank');
       
       setIsSuccess(true);
     } catch (error) {
@@ -670,6 +670,9 @@ export default function App() {
               <a href="#pricing" className="w-full sm:w-auto bg-white text-black px-10 py-5 rounded-2xl font-black text-lg hover:scale-105 transition-all shadow-xl shadow-white/10">
                 GET VIP ACCESS NOW
               </a>
+              <a href="https://t.me/+PurHCbpKar1kZDA9" target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto bg-blue-600 text-white px-10 py-5 rounded-2xl font-black text-lg hover:bg-blue-500 hover:scale-105 transition-all shadow-xl shadow-blue-500/20 flex flex-row items-center justify-center gap-3">
+                <Send className="w-5 h-5" /> JOIN VIP CHANNEL
+              </a>
               <a href="#proof" className="w-full sm:w-auto bg-white/5 border border-white/10 text-white px-10 py-5 rounded-2xl font-black text-lg hover:bg-white/10 transition-all">
                 VIEW PROOF
               </a>
@@ -1019,9 +1022,9 @@ export default function App() {
           </div>
           <p className="text-gray-500 text-sm mb-8">© 2026 ProHack. All rights reserved. Use responsibly.</p>
           <div className="flex justify-center gap-6">
-            <a href="#" className="text-gray-500 hover:text-white transition-colors">Telegram</a>
+            <a href="https://t.me/+PurHCbpKar1kZDA9" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-white transition-colors">Telegram</a>
             <a href="#" className="text-gray-500 hover:text-white transition-colors">WhatsApp</a>
-            <a href="#" className="text-gray-500 hover:text-white transition-colors">Support</a>
+            <a href="https://t.me/ProHackAdmin" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-white transition-colors">Support</a>
           </div>
         </div>
       </footer>
@@ -1057,13 +1060,26 @@ export default function App() {
               {/* High Definition Content Container */}
               <div className="w-full h-full overflow-y-auto py-10 md:py-20 px-4 flex justify-center items-center custom-scrollbar scroll-smooth">
                 {previewItem.type === 'video' ? (
-                  <div className="w-full max-w-sm aspect-[9/16] rounded-[2.5rem] overflow-hidden shadow-[0_0_150px_rgba(249,115,22,0.3)] border border-white/10 bg-black">
-                    <iframe 
-                      src={previewItem.url} 
-                      className="w-full h-full border-0"
-                      allow="autoplay"
-                      allowFullScreen
-                    />
+                  <div className="w-full max-w-sm flex flex-col items-center gap-4">
+                    <div className="w-full aspect-[9/16] rounded-[2.5rem] overflow-hidden shadow-[0_0_150px_rgba(249,115,22,0.3)] border border-white/10 bg-black relative">
+                      {previewItem.url.includes('drive.google.com') ? (
+                        <iframe 
+                          src={previewItem.url} 
+                          className="w-full h-full border-0 absolute inset-0"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                          allowFullScreen
+                        />
+                      ) : (
+                        <video 
+                          src={previewItem.url}
+                          className="w-full h-full object-cover absolute inset-0"
+                          playsInline
+                          controls
+                          autoPlay
+                          loop
+                        />
+                      )}
+                    </div>
                   </div>
                 ) : (
                   <img 
