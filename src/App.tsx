@@ -837,6 +837,14 @@ export default function App() {
                     <span className="text-gray-500 line-through text-lg">₹{plan.originalPrice}</span>
                     <span className="bg-green-500/20 text-green-500 text-[10px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider">30% OFF</span>
                   </div>
+                  {plan.offerText && (
+                    <div className="mb-2">
+                      <span className="inline-flex items-center gap-1.5 bg-red-500/20 text-red-500 text-[10px] font-black px-2 py-1 rounded-md uppercase tracking-widest border border-red-500/30">
+                        <Clock className="w-3 h-3" />
+                        {plan.offerText}
+                      </span>
+                    </div>
+                  )}
                   <div className="flex items-baseline gap-1">
                     <span className="text-4xl font-black">₹{plan.price}</span>
                     <span className="text-gray-500 text-sm">/{plan.id === 'lifetime' ? 'Life' : plan.id}</span>

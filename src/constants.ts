@@ -2,10 +2,11 @@ export const PLANS = [
   {
     id: '14days',
     name: '14 DAYS',
-    price: 649,
+    price: 449,
     originalPrice: 999,
     duration: '14 Days Access',
-    features: ['All Games Working', 'Instant Activation', '24/7 Support', 'Anti-Ban Protection', 'Number Winning 100%']
+    features: ['All Games Working', 'Instant Activation', '24/7 Support', 'Anti-Ban Protection', 'Number Winning 100%'],
+    offerText: 'Only For Today'
   },
   {
     id: '30days',
