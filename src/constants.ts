@@ -1,5 +1,13 @@
 export const PLANS = [
   {
+    id: '7days',
+    name: '7 DAYS',
+    price: 199,
+    originalPrice: 499,
+    duration: '7 Days Access',
+    features: ['All Games Working', 'Instant Activation', '24/7 Support', 'Anti-Ban Protection', 'Number Winning 100%']
+  },
+  {
     id: '14days',
     name: '14 DAYS',
     price: 449,
