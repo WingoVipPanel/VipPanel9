@@ -1,17 +1,9 @@
 export const PLANS = [
   {
-    id: '7days',
-    name: '7 DAYS',
-    price: 199,
-    originalPrice: 499,
-    duration: '7 Days Access',
-    features: ['All Games Working', 'Instant Activation', '24/7 Support', 'Anti-Ban Protection', 'Number Winning 100%']
-  },
-  {
     id: '14days',
     name: '14 DAYS',
-    price: 449,
-    originalPrice: 999,
+    price: 549,
+    originalPrice: 1299,
     duration: '14 Days Access',
     features: ['All Games Working', 'Instant Activation', '24/7 Support', 'Anti-Ban Protection', 'Number Winning 100%'],
     offerText: 'Only For Today'
@@ -20,7 +12,7 @@ export const PLANS = [
     id: '30days',
     name: '30 DAYS',
     price: 849,
-    originalPrice: 1299,
+    originalPrice: 1599,
     duration: '30 Days Access',
     features: ['All Games Working', 'Instant Activation', '24/7 Support', 'Anti-Ban Protection', 'Priority Updates', 'Number Winning 100%'],
     popular: true
@@ -28,8 +20,8 @@ export const PLANS = [
   {
     id: 'lifetime',
     name: 'LIFE TIME',
-    price: 1499,
-    originalPrice: 2199,
+    price: 2599,
+    originalPrice: 4999,
     duration: 'Unlimited Access',
     features: ['All Games Working', 'Instant Activation', '24/7 Support', 'Anti-Ban Protection', 'Lifetime Updates', 'VIP Group Access', 'Number Winning 100%']
   }

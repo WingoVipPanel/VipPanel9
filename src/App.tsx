@@ -812,7 +812,7 @@ export default function App() {
             <h2 className="text-4xl md:text-5xl font-black mb-4">CHOOSE YOUR PLAN</h2>
             <p className="text-gray-500">Select a plan that fits your winning streak.</p>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid md:grid-cols-3 gap-8">
             {PLANS.map((plan, i) => (
               <motion.div 
                 key={i} 
